@@ -1,6 +1,7 @@
 package org.sample.juc;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -32,10 +33,17 @@ public class NotSafeDemo03 {
 
         //setNoSafe();
 
-        Map<String,String> map = new HashMap<>();
+        mapNotSafe();
+    }
+
+    /**
+     * ConcurrentHashMap
+     */
+    private static void mapNotSafe() {
+        Map<String,String> map = new ConcurrentHashMap<>();
         for (int i = 1; i<=30; i++) {
             new Thread(() -> {
-                map.put(Thread.currentThread().getName() ,UUID.randomUUID().toString().substring(0,20));
+                map.put(Thread.currentThread().getName() , UUID.randomUUID().toString().substring(0,20));
                 System.out.println(map);
             }, String.valueOf(i)).start();
         }
